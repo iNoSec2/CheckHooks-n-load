@@ -28,6 +28,12 @@ https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-
 
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
 
+-----------------
+
+### In order to remove FalsePositve Hooks (all, not just `Nt` or `Zw`) => Refer this repo: [RemoveFalsePositives](https://github.com/reveng007/RemoveFalsePositives).
+
+-----------------
+
 ### Internal Findings:
 
 1. Bypassing [Get-InjectedThread.ps1](https://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2) by [@jaredcatkinson](https://twitter.com/jaredcatkinson?lang=en):
