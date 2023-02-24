@@ -2,6 +2,8 @@
 
 ### Main Idea: Dynamic Evasion
 
+A Windows _`stager-cum-PELoader`_ focusing ***Dynamic EDR Evasion*** as well as FUD till now (24/02/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
+
 ![image](https://user-images.githubusercontent.com/61424547/218156540-e0b6ee2b-e478-49a2-88b7-b8ef805c63ff.png)
 
 Actually this image made me to do this Project. (Thanks to [@matterpreter](https://twitter.com/matterpreter))
@@ -20,11 +22,17 @@ Actually this image made me to do this Project. (Thanks to [@matterpreter](https
 **After the Usage of this PE header _EDITING_ technique**:
 ![image](https://user-images.githubusercontent.com/61424547/219119758-f8290593-a9cf-4b3f-a6d1-338f8e3ce5b3.png)
 
-### Demo:
+### Demo (Only Checked against BitDefender):
 
 https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-8ac9-cd1351ec87da.mp4
 
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
+
+-----------------
+
+### In order to remove FalsePositve Hooks (all, not just `Nt` or `Zw`) => Refer this repo: [RemoveFalsePositives](https://github.com/reveng007/RemoveFalsePositives).
+
+-----------------
 
 ### Internal Findings:
 
