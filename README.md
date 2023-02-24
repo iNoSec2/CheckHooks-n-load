@@ -28,6 +28,13 @@ https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-
 
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
 
+#### Update: Added C# Script which appends `png header` at the start of the demon binary -
+```
+$ cd header-change
+$ compile_cs.bat
+$ .\append_png_header.exe
+```
+
 -----------------
 
 ### In order to remove FalsePositve Hooks (all, not just `Nt` or `Zw`) => Refer this repo: [RemoveFalsePositives](https://github.com/reveng007/RemoveFalsePositives).
