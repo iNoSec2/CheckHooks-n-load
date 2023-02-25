@@ -1,5 +1,7 @@
 ## :exclamation: Another Small personal Project POC form my side. Completely Free and Open Source. Doesn't belong to my Company's Asset!
 
+### BTW, a Strong Update of this tool will come from my side, as soon as I get a hand of the _Free Trial_ Version of `CrowdStrike Falcon` :wink:
+
 ### Main Idea: Dynamic Evasion
 
 A Windows _`stager-cum-PELoader`_ focusing ***Dynamic EDR Evasion*** as well as FUD till now (24/02/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
