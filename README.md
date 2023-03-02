@@ -30,12 +30,24 @@ https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-
 
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
 
-#### Update: Added C# Script which appends `png header` at the start of the demon binary -
+#### Update1: Added Obfuscator C# Script which appends `png header` at the start of the demon binary -
 ```
 $ cd header-change
 $ compile_cs.bat
 $ .\append_png_header.exe
 ```
+#### Update2: Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr))-
+```
+$ python3 aes.py demon.exe
+$ ls
+aes.py demon.exe implant.bin
+```
+
+Tried out [Execution Guardrails: Environmental Keying](https://attack.mitre.org/techniques/T1480/001/) using **`GetSystemDirectoryA()`** in Main Implant so that:\
+i. We don't need hardcoding of password.\
+ii. We don't need to download the key while RunTime.\
+iii. No Need of Special Intial Recon for Knowing any Artifacts Unique to the Victim Machine prior to the Execution of this Implant. Moreover, incase of phishing, we don't have anything known, except the mail addresses of the employees of the Target Organization.\
+iv. It automatically retrieves string `C:\WINDOWS\system32` using **`GetSystemDirectoryA()`** at runtime (all x64 arch has this folder, no problem regarding that) and uses this as a key to decrypt the AES Encrypted _stage2 PE binary_.
 
 -----------------
 
