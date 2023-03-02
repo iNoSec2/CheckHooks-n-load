@@ -12,7 +12,11 @@ Actually this image made me to do this Project. (Thanks to [@matterpreter](https
 
 #### 1. First dumping the Hooked Function and then wait for User Input => Name of implant to download From remote.
 #### 2. Once the implant is ready (Doesn't use any hooked functions which are dumped previously), the implant is hosted on the payload Server and inputed as implant name into this PE Loader.
-#### 3. Then implant Header needs to edited using any hex editor, in my case => I edited from **`MZ`** to **`ÉZ`** and then Downloaded from the Website in that state. This is done just to trick **`EDR`** that the downloaded binary is not any PE binary. Much much thanks to [@peterwintrsmith](https://twitter.com/peterwintrsmith) for this suggestion! :smile:
+#### 3. Obfuscation Methods: Much much thanks to [@peterwintrsmith](https://twitter.com/peterwintrsmith) for all these suggestions! :smile:
+
+------------------------
+
+#### i. Then implant Header needs to edited using any hex editor, in my case => I edited from **`MZ`** to **`ÉZ`** and then Downloaded from the Website in that state. This is done just to trick **`EDR`** that the downloaded binary is not any PE binary.
 
 **Editing Demon.exe (HavocC2 bin)**:
 ![image](https://user-images.githubusercontent.com/61424547/219120555-3c790d82-cd0b-4753-b959-49acb776a94c.png)
@@ -30,24 +34,57 @@ https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-
 
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
 
-#### Update1: Added Obfuscator C# Script which appends `png header` at the start of the demon binary -
+------------------------
+
+#### Update!
+#### ii. Added Obfuscator C# Script which appends `png header` at the start of the demon binary -
 ```
-$ cd header-change
+$ cd obfuscator
 $ compile_cs.bat
 $ .\append_png_header.exe
 ```
-#### Update2: Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr))-
+1. BitDefender Static Scan:
+
+![image](https://user-images.githubusercontent.com/61424547/222493375-1fd0026f-f965-4b9f-8279-99da74a4fdc5.png)
+
+2. BitDefender Dynamic Scan:
+
+https://user-images.githubusercontent.com/61424547/222496578-646add0a-3672-4784-be3b-f9a5b6be95e4.mp4
+
+3. Add CrowdStrike SS:
+
+- Will be doing as soon as I get a hand, told one of a friend of mine
+
+------------------------
+
+#### Update again!
+#### iii. Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr))-
 ```
+$ cd obfuscator
 $ python3 aes.py demon.exe
 $ ls
 aes.py demon.exe implant.bin
 ```
+Required python lib: `hashlib`, `pycryptodome` and `pycryptodomex`
 
-Tried out [Execution Guardrails: Environmental Keying](https://attack.mitre.org/techniques/T1480/001/) using **`GetSystemDirectoryA()`** in Main Implant so that:\
-i. We don't need hardcoding of password.\
-ii. We don't need to download the key while RunTime.\
-iii. No Need of Special Intial Recon for Knowing any Artifacts Unique to the Victim Machine prior to the Execution of this Implant. Moreover, incase of phishing, we don't have anything known, except the mail addresses of the employees of the Target Organization.\
-iv. It automatically retrieves string `C:\WINDOWS\system32` using **`GetSystemDirectoryA()`** at runtime (all x64 arch has this folder, no problem regarding that) and uses this as a key to decrypt the AES Encrypted _stage2 PE binary_.
+#### Tried out [Execution Guardrails: Environmental Keying](https://attack.mitre.org/techniques/T1480/001/) using **`GetSystemDirectoryA()`** in Main Implant so that:
+> i. We don't need hardcoding of password.\
+> ii. We don't need to download the key while RunTime.\
+> iii. No Need of Special Intial Recon for Knowing any Artifacts Unique to the Victim Machine prior to the Execution of this Implant. Moreover, incase of phishing, we don't have anything known, except the mail addresses of the employees of the Target Organization.\
+> iv. It automatically retrieves string `C:\WINDOWS\system32` using **`GetSystemDirectoryA()`** at runtime (all x64 arch has this folder, no problem regarding that) and uses this as a key to decrypt the AES Encrypted _stage2 PE binary_.
+
+1. BitDefender Static Scan:
+
+![image](https://user-images.githubusercontent.com/61424547/222498489-26700c81-2843-470c-93c3-05a789909ae7.png)
+
+2. BitDefender Dynamic Scan:
+
+- Currently Troublsheooting for this part
+- Running successfully in host but not in VM, weired => Related to decryption issue
+
+3. Add CrowdStrike SS:
+
+- Will be doing as soon as I get a hand, told one of a friend of mine
 
 -----------------
 
@@ -73,7 +110,7 @@ I used EnumThreadWindows not CreateRemoteThread, to run shellcode version of ntd
 
 4. [Capa](https://github.com/mandiant/capa) Scan:
 
-![image](https://user-images.githubusercontent.com/61424547/219207726-b8f6e07e-6ca9-4ef1-a9e9-648e15d5615a.png)
+![image](https://user-images.githubusercontent.com/61424547/222473656-c0e7d481-9bf0-4db7-bbed-01d3c7fdef7d.png)
 
 5. [Moneta](https://github.com/forrest-orr/moneta) Scan: 
 
