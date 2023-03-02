@@ -15,7 +15,7 @@ Actually this image made me to do this Project. (Thanks to [@matterpreter](https
 #### 3. Obfuscation Methods: Much much thanks to [@peterwintrsmith](https://twitter.com/peterwintrsmith) for all these suggestions! :smile:
 
 ------------------------
-
+- UnComment Method 1 and Comment Method2 and 3
 #### i. Then implant Header needs to edited using any hex editor, in my case => I edited from **`MZ`** to **`ÉZ`** and then Downloaded from the Website in that state. This is done just to trick **`EDR`** that the downloaded binary is not any PE binary.
 
 **Editing Demon.exe (HavocC2 bin)**:
@@ -35,7 +35,7 @@ https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-
 Video Link: https://drive.google.com/file/d/1Y7MqPWR13fY0WqNGUTXPgYVbiMy-j41d/view?usp=sharing
 
 ------------------------
-
+- UnComment Method2 and Comment Method1 and 3
 #### Update!
 #### ii. Added Obfuscator C# Script which appends `png header` at the start of the demon binary -
 ```
@@ -56,7 +56,7 @@ https://user-images.githubusercontent.com/61424547/222496578-646add0a-3672-4784-
 - Will be doing as soon as I get a hand, told one of a friend of mine
 
 ------------------------
-
+- UnComment Method3 and Comment Method1 and 2
 #### Update again!
 #### iii. Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr))-
 ```
