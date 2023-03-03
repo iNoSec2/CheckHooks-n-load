@@ -4,7 +4,7 @@
 
 ### Main Idea: Dynamic Evasion
 
-A Windows _`stager-cum-PELoader`_ focusing ***Dynamic EDR Evasion*** as well as FUD till now (24/02/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
+A Windows _`stager-cum-PELoader`_ focusing ***Dynamic EDR Evasion*** as well as FUD (acc. to antiscan.me) till now (03/03/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
 
 ![image](https://user-images.githubusercontent.com/61424547/218156540-e0b6ee2b-e478-49a2-88b7-b8ef805c63ff.png)
 
@@ -79,8 +79,13 @@ Required python lib: `hashlib`, `pycryptodome` and `pycryptodomex`
 
 2. BitDefender Dynamic Scan:
 
-- Currently Troublsheooting for this part
-- Running successfully in host but not in VM, weired => Related to decryption issue
+- I was facing a issue here:
+- I saw that:
+  1. In My windows Host: my cpp implant is retrieving: "`C:\WINDOWS\system32`" via `GetSystemDirectoryA()`
+  2. But in my Windows VM: my cpp implant is retrieving: "`C:\Windows\system32`" via `GetSystemDirectoryA()`
+  3. Changing the Whole string to `UpperCase()`, after retrieving to _avoid confusion_ 👍
+
+https://user-images.githubusercontent.com/61424547/222793675-5f4f511c-e760-49b9-ac16-c66875cfa05d.mp4
 
 3. Add CrowdStrike SS:
 
@@ -106,7 +111,7 @@ I used EnumThreadWindows not CreateRemoteThread, to run shellcode version of ntd
 
 3. AntiScan.me Scan:
 
-![image](https://user-images.githubusercontent.com/61424547/219206667-cb056b22-8ebb-4fdc-ad77-642854517750.png)
+![image](https://user-images.githubusercontent.com/61424547/222788306-2ca260fd-aad0-4143-936c-b8c6d64cd3af.png)
 
 4. [Capa](https://github.com/mandiant/capa) Scan:
 
