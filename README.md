@@ -28,7 +28,11 @@ Actually this image made me to do this Project. (Thanks to [@matterpreter](https
 **After the Usage of this PE header _EDITING_ technique**:
 ![image](https://user-images.githubusercontent.com/61424547/219119758-f8290593-a9cf-4b3f-a6d1-338f8e3ce5b3.png)
 
-### Demo (Only Checked against BitDefender):
+1. BitDefender Static Scan:
+
+![image](https://user-images.githubusercontent.com/61424547/222493375-1fd0026f-f965-4b9f-8279-99da74a4fdc5.png)
+
+2. BitDefender Dynamic Scan:
 
 https://user-images.githubusercontent.com/61424547/219202618-6fcc9a3c-63df-4745-8ac9-cd1351ec87da.mp4
 
