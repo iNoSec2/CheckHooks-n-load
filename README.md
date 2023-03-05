@@ -62,7 +62,7 @@ https://user-images.githubusercontent.com/61424547/222496578-646add0a-3672-4784-
 ------------------------
 - UnComment Method3 and Comment Method1 and 2
 #### Update again!
-#### iii. Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr))-
+#### iii. Added another Obfuscator Python Script (Not C#, My Xp while doing AES Encryption in C# was pretty Crappy! :angry:, took a lot of time) which obfuscates the demon binary with `C:\WINDOWS\system32` (as key) (Thanks to [@D1rkMtr](https://twitter.com/D1rkMtr) for the AES Encryption template!)-
 ```
 $ cd obfuscator
 $ python3 aes.py demon.exe
