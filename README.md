@@ -4,7 +4,7 @@
 
 ### Main Idea: Dynamic Evasion
 
-A Windows _`stager-cum-PELoader`_ focusing ***Dynamic EDR Evasion*** as well as FUD (acc. to antiscan.me) till now (03/03/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
+A Windows _`stager-cum-PELoader`_ with a focus of ***Dynamically evading EDR hooks*** as well as FUD (acc. to antiscan.me) till now (03/03/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
 
 ![image](https://user-images.githubusercontent.com/61424547/218156540-e0b6ee2b-e478-49a2-88b7-b8ef805c63ff.png)
 
