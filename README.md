@@ -2,6 +2,8 @@
 
 ### BTW, a Strong Update of this tool will come from my side, as soon as I get a hand of the _Free Trial_ Version of `CrowdStrike Falcon` :wink:
 
+> ***This Project is Under Upgradation => Once I get time, I will push some updates to it to erradicate most Flaws!***
+
 ### Main Idea: Dynamic Evasion
 
 A Windows _`stager-cum-PELoader`_ with a focus of ***Dynamically evading EDR hooks*** as well as FUD (acc. to antiscan.me) till now (03/03/23), when Operator wants to Know the the Underlying functions Hooks and then craft Implant based on the previous condition and load that in-memory using this PELoader.
